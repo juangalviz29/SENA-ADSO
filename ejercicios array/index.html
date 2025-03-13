@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Aplicaciones</title>
+    <script>
+
+        const hotelApp = () => {
+            let habitaciones = [0, 0, 0, 0, 0];
+
+            const mostrarEstado = () => {
+                let estado = "Estado de habitaciones:\n";
+                for (let i = 0; i < habitaciones.length; i++) {
+                    estado += Habitación ${i + 1}: ${habitaciones[i] === 0 ? "Libre" : "Ocupada"}\n;
+                }
+                alert(estado);
+            };
+
+            const reservarHabitacion = (num) => {
+                if (num < 1 || num > 5) {
+                    alert("Número de habitación inválido. Usa 1 - 5.");
+                } else if (habitaciones[num - 1] === 1) {
+                    alert("Habitación ya ocupada.");
+                } else {
+                    habitaciones[num - 1] = 1;
+                    alert(Habitación ${num} reservada con éxito.);
+                }
+            };
+
+            const liberarHabitacion = (num) => {
+                if (num < 1 || num > 5) {
+                    alert("Número de habitación inválido. Usa 1 - 5.");
+                } else if (habitaciones[num - 1] === 0) {
+                    alert("Habitación ya está libre.");
+                } else {
+                    habitaciones[num - 1] = 0;
+                    alert(Habitación ${num} liberada con éxito.);
+                }
+            };
+
+            while (true) {
+                let opcion = prompt("1. Ver estado\n2. Reservar\n3. Liberar\n4. Salir\nElige una opción:");
+                switch (opcion) {
+                    case "1":
+                        mostrarEstado();
+                        break;
+                    case "2":
+                        let numReservar = parseInt(prompt("Ingresa el número de habitación (1 - 5):"));
+                        reservarHabitacion(numReservar);
+                        break;
+                    case "3":
+                        let numLiberar = parseInt(prompt("Ingresa el número de habitación (1 - 5):"));
+                        liberarHabitacion(numLiberar);
+                        break;
+                    case "4":
+                        alert("Saliendo...");
+                        return;
+                    default:
+                        alert("Opción inválida.");
+                }
+            }
+        };
+
+        const cajeroApp = () => {
+            let transacciones = [];
+            let saldo = 0;
+
+            const consultarSaldo = () => {
+                alert(Tu saldo actual es: $${saldo});
+            };
+
+            const depositar = (monto) => {
+                if (monto > 0) {
+                    saldo += monto;
+                    transacciones.push(monto);
+                    alert(Has depositado: $${monto});
+                } else {
+                    alert("El monto debe ser positivo.");
+                }
+            };
+
+            const retirar = (monto) => {
+                if (monto > 500) {
+                    alert("No puedes retirar más de $500 en una sola transacción.");
+                } else if (monto > saldo) {
+                    alert("Saldo insuficiente.");
+                } else {
+                    saldo -= monto;
+                    transacciones.push(-monto);
+                    alert(Has retirado: $${monto});
+                }
+            };
+
+            while (true) {
+                let opcion = prompt("1. Consultar saldo\n2. Depositar\n3. Retirar\n4. Salir\nElige una opción:");
+                switch (opcion) {
+                    case "1":
+                        consultarSaldo();
+                        break;
+                    case "2":
+                        let montoDepositar = parseFloat(prompt("Ingresa el monto a depositar:"));
+                        depositar(montoDepositar);
+                        break;
+                    case "3":
+                        let montoRetirar = parseFloat(prompt("Ingresa el monto a retirar:"));
+                        retirar(montoRetirar);
+                        break;
+                    case "4":
+                        alert("Saliendo...");
+                        return; 
+                    default:
+                        alert("Opción inválida.");
+                }
+            }
+        };
+
+        const supermercadoApp = () => {
+            let cola = [];
+            const capacidad = 7;
+
+            const agregarCliente = (nombre) => {
+                if (cola.length < capacidad) {
+                    cola.push(nombre);
+                    alert(${nombre} ha sido agregado a la cola.);
+                } else {
+                    alert("La cola está llena.");
+                }
+            };
+
+            const atenderCliente = () => {
+                if (cola.length > 0) {
+                    let clienteAtendido = cola.shift();
+                    alert(Atendiendo a ${clienteAtendido}.);
+                } else {
+                    alert("No hay clientes en la cola.");
+                }
+            };
+
+            while (true) {
+                let opcion = prompt("1. Agregar cliente\n2. Atender cliente\n3. Salir\nElige una opción:");
+                switch (opcion) {
+                    case "1":
+                        let nombreCliente = prompt("Ingresa el nombre del cliente:");
+                        agregarCliente(nombreCliente);
+                        break;
+                    case "2":
+                        atenderCliente();
+                        break;
+                    case "3":
+                        alert("Saliendo...");
+                        return; 
+                    default:
+                        alert("Opción inválida.");
+                }
+            }
+        };
+
+
+        const maquinaExpendedoraApp = () => {
+            let productos = ["Galletas", "Refresco", "Chocolates", "Caramelos", "Chips"];
+            let cantidades = [5, 5, 5, 5, 5];
+
+            const mostrarInventario = () => {
+                let inventario = "Inventario:\n";
+                for (let i = 0; i < productos.length; i++) {
+                    inventario += ${i + 1}. ${productos[i]} - Cantidad: ${cantidades[i]}\n;
+                }
+                alert(inventario);
+            };
+
+            const procesarPago = (codigo) => {
+                if (cantidades[codigo - 1] > 0) {
+                    cantidades[codigo - 1]--;
+                    alert(Has comprado: ${productos[codigo - 1]});
+                } else {
+                    alert(${productos[codigo - 1]} está agotado. Sugerencia: ${sugerirProducto()});
+                }
+            };
+
+            const sugerirProducto = () => {
+                for (let i = 0; i < cantidades.length; i++) {
+                    if (cantidades[i] > 0) {
+                        return productos[i];
+                    }
+                }
+                return "No hay productos disponibles.";
+            };
+
+            while (true) {
+                let opcion = prompt("1. Mostrar inventario\n2. Comprar producto\n3. Salir\nElige una opción:");
+                switch (opcion) {
+                    case "1":
+                        mostrarInventario();
+                        break;
+                    case "2":
+                        let codigoProducto = parseInt(prompt("Ingresa el código del producto (1 - 5):"));
+                        if (codigoProducto < 1 || codigoProducto > 5) {
+                            alert("Código inválido.");
+                        } else {
+                            procesarPago(codigoProducto);
+                        }
+                        break;
+                    case "3":
+                        alert("Saliendo...");
+                        return; 
+                    default:
+                        alert("Opción inválida.");
+                }
+            }
+        };
+
+        const mainMenu = () => {
+            while (true) {
+                let opcion = prompt("Selecciona la aplicación que deseas usar:\n1. Sistema de Reservas de Hotel\n2. Cajero Automático de Banco\n3. Cola de Atención de Clientes en Supermercado\n4. Máquina Expendedora de Dulces y Gaseosas\n5. Salir");
+                switch (opcion) {
+                    case "1":
+                        hotelApp();
+                        break;
+                    case "2":
+                        cajeroApp();
+                        break;
+                    case "3":
+                        supermercadoApp();
+                        break;
+                    case "4":
+                        maquinaExpendedoraApp();
+                        break;
+                    case "5":
+                        alert("Saliendo del programa...");
+                        return; 
+                    default:
+                        alert("Opción inválida.");
+                }
+            }
+        };
+
+        window.onload = mainMenu;
+    </script>
+</head>
+<body>
+</body>
+</html>
