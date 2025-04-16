@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Hotelera</title>
+    <script>
+
+        const hotelApp = () => {
+            alert("Bienvenido al Sistema de Gestión Hotelera\n\n" +
+                  "Este sistema le permite administrar las 5 habitaciones del hotel (3 estándar y 2 suites).\n" +
+                  "Podrá reservar, liberar y consultar el estado de las habitaciones.");
+
+            const habitaciones = new Map();
+
+            for (let i = 1; i <= 5; i++) {
+                habitaciones.set(i, {
+                    estado: 'libre',
+                    cliente: null,
+                    fechaReserva: null,
+                    tipo: i <= 3 ? 'estándar' : 'suite' 
+                });
+            }
+
+            const clientes = new Set();
+        
+            const mostrarEstado = () => {
+                let estado = "Estado de habitaciones:\n";
+                habitaciones.forEach((info, num) => {
+                    estado += `Habitación ${num} (${info.tipo}): ${info.estado === 'libre' ? 'Libre' : 
+                              `Ocupada por ${info.cliente} (desde ${info.fechaReserva})`}\n`;
+                });
+                alert(estado);
+                
+                alert(`Total clientes únicos: ${clientes.size}`);
+            };
+        
+            const reservarHabitacion = (num, nombreCliente) => {
+                if (!habitaciones.has(num)) {
+                    alert("Número de habitación inválido. Usa 1 - 5.");
+                    return;
+                }
+        
+                const habitacion = habitaciones.get(num);
+                
+                if (habitacion.estado === 'ocupada') {
+                    alert(`Habitación ${num} ya ocupada por ${habitacion.cliente}.`);
+                    return;
+                }
+        
+                if (!nombreCliente || nombreCliente.trim() === '') {
+                    alert("Debe proporcionar un nombre de cliente.");
+                    return;
+                }
+        
+                const fechaActual = new Date().toLocaleDateString();
+                habitacion.estado = 'ocupada';
+                habitacion.cliente = nombreCliente;
+                habitacion.fechaReserva = fechaActual;
+                
+                clientes.add(nombreCliente);
+                
+                alert(`Habitación ${num} reservada con éxito para ${nombreCliente}.`);
+            };
+        
+            const liberarHabitacion = (num) => {
+                if (!habitaciones.has(num)) {
+                    alert("Número de habitación inválido. Usa 1 - 5.");
+                    return;
+                }
+        
+                const habitacion = habitaciones.get(num);
+                
+                if (habitacion.estado === 'libre') {
+                    alert("Habitación ya está libre.");
+                    return;
+                }
+        
+                const clienteLiberado = habitacion.cliente;
+                habitacion.estado = 'libre';
+                habitacion.cliente = null;
+                habitacion.fechaReserva = null;
+                
+                alert(`Habitación ${num} liberada. Buen viaje, ${clienteLiberado}!`);
+            };
+        
+            const buscarCliente = (nombre) => {
+                const habitacionesOcupadas = [];
+                
+                habitaciones.forEach((info, num) => {
+                    if (info.estado === 'ocupada' && info.cliente.toLowerCase().includes(nombre.toLowerCase())) {
+                        habitacionesOcupadas.push(num);
+                    }
+                });
+        
+                if (habitacionesOcupadas.length > 0) {
+                    alert(`${nombre} está en las habitaciones: ${habitacionesOcupadas.join(', ')}`);
+                } else {
+                    alert(`No se encontró a ${nombre} en ninguna habitación.`);
+                }
+            };
+        
+            const mostrarClientes = () => {
+                if (clientes.size === 0) {
+                    alert("No hay clientes registrados.");
+                    return;
+                }
+        
+                let listaClientes = "Clientes registrados:\n";
+                clientes.forEach(cliente => {
+                    listaClientes += `- ${cliente}\n`;
+                });
+                alert(listaClientes);
+            };
+        
+            while (true) {
+                let opcion = prompt(
+                    "MENÚ PRINCIPAL\n\n" +
+                    "1. Ver estado de habitaciones\n" +
+                    "2. Reservar habitación\n" +
+                    "3. Liberar habitación\n" +
+                    "4. Buscar cliente\n" +
+                    "5. Mostrar todos los clientes\n" +
+                    "6. Salir\n\n" +
+                    "Elige una opción (1-6):"
+                );
+        
+                switch (opcion) {
+                    case "1":
+                        mostrarEstado();
+                        break;
+                    case "2":
+                        const numReservar = parseInt(prompt("Ingresa el número de habitación (1 - 5):"));
+                        const nombreCliente = prompt("Ingresa el nombre del cliente:");
+                        reservarHabitacion(numReservar, nombreCliente);
+                        break;
+                    case "3":
+                        const numLiberar = parseInt(prompt("Ingresa el número de habitación (1 - 5):"));
+                        liberarHabitacion(numLiberar);
+                        break;
+                    case "4":
+                        const nombreBuscar = prompt("Ingresa el nombre del cliente a buscar:");
+                        buscarCliente(nombreBuscar);
+                        break;
+                    case "5":
+                        mostrarClientes();
+                        break;
+                    case "6":
+                        alert("Gracias por usar el Sistema de Gestión Hotelera. ¡Hasta pronto!");
+                        return;
+                    default:
+                        alert("Opción inválida. Por favor, elige un número del 1 al 6.");
+                }
+            }
+        };
+
+        window.onload = hotelApp;
+    </script>
+</head>
+<body>
+    <h1 style="display:none;">Sistema de Gestión Hotelera</h1>
+</body>
+</html>

@@ -6,14 +6,14 @@
     <title>Menú de Aplicaciones</title>
     <script>
 
+    //hotel
         const hotelApp = () => {
             let habitaciones = [0, 0, 0, 0, 0];
 
             const mostrarEstado = () => {
                 let estado = "Estado de habitaciones:\n";
-                for (let i = 0; i < habitaciones.length; i++) {
-                    estado += Habitación ${i + 1}: ${habitaciones[i] === 0 ? "Libre" : "Ocupada"}\n;
-                }
+                for (let i = 0; i < habitaciones.length; i++) 
+                {`estado += Habitación ${i + 1}: ${habitaciones[i] === 0 ? "Libre" : "Ocupada"}\n;`}
                 alert(estado);
             };
 
@@ -24,7 +24,7 @@
                     alert("Habitación ya ocupada.");
                 } else {
                     habitaciones[num - 1] = 1;
-                    alert(Habitación ${num} reservada con éxito.);
+                    alert(`Habitación ${num} reservada con éxito.`);
                 }
             };
 
@@ -35,7 +35,7 @@
                     alert("Habitación ya está libre.");
                 } else {
                     habitaciones[num - 1] = 0;
-                    alert(Habitación ${num} liberada con éxito.);
+                    alert(`Habitación ${num} liberada con éxito.`);
                 }
             };
 
@@ -62,19 +62,20 @@
             }
         };
 
+    //cajero
         const cajeroApp = () => {
             let transacciones = [];
             let saldo = 0;
 
             const consultarSaldo = () => {
-                alert(Tu saldo actual es: $${saldo});
+                alert(`Tu saldo actual es: $${saldo}`);
             };
 
             const depositar = (monto) => {
                 if (monto > 0) {
                     saldo += monto;
                     transacciones.push(monto);
-                    alert(Has depositado: $${monto});
+                    alert(`Has depositado: $${monto}`);
                 } else {
                     alert("El monto debe ser positivo.");
                 }
@@ -88,7 +89,7 @@
                 } else {
                     saldo -= monto;
                     transacciones.push(-monto);
-                    alert(Has retirado: $${monto});
+                    alert(`Has retirado: $${monto}`);
                 }
             };
 
@@ -115,6 +116,7 @@
             }
         };
 
+    //superMercado
         const supermercadoApp = () => {
             let cola = [];
             const capacidad = 7;
@@ -122,7 +124,7 @@
             const agregarCliente = (nombre) => {
                 if (cola.length < capacidad) {
                     cola.push(nombre);
-                    alert(${nombre} ha sido agregado a la cola.);
+                    alert(`${nombre} ha sido agregado a la cola.`);
                 } else {
                     alert("La cola está llena.");
                 }
@@ -131,7 +133,7 @@
             const atenderCliente = () => {
                 if (cola.length > 0) {
                     let clienteAtendido = cola.shift();
-                    alert(Atendiendo a ${clienteAtendido}.);
+                    alert(`Atendiendo a ${clienteAtendido}.`);
                 } else {
                     alert("No hay clientes en la cola.");
                 }
@@ -156,25 +158,24 @@
             }
         };
 
-
+    //maquinaExpendedora
         const maquinaExpendedoraApp = () => {
             let productos = ["Galletas", "Refresco", "Chocolates", "Caramelos", "Chips"];
             let cantidades = [5, 5, 5, 5, 5];
 
             const mostrarInventario = () => {
                 let inventario = "Inventario:\n";
-                for (let i = 0; i < productos.length; i++) {
-                    inventario += ${i + 1}. ${productos[i]} - Cantidad: ${cantidades[i]}\n;
-                }
+                for (let i = 0; i < productos.length; i++) 
+                {`inventario += ${i + 1}. ${productos[i]} - Cantidad: ${cantidades[i]}\n;`}
                 alert(inventario);
             };
 
             const procesarPago = (codigo) => {
                 if (cantidades[codigo - 1] > 0) {
                     cantidades[codigo - 1]--;
-                    alert(Has comprado: ${productos[codigo - 1]});
+                    alert(`Has comprado: ${productos[codigo - 1]}`);
                 } else {
-                    alert(${productos[codigo - 1]} está agotado. Sugerencia: ${sugerirProducto()});
+                    alert(`${productos[codigo - 1]}.está agotado. Sugerencia: ${sugerirProducto()}`);
                 }
             };
 

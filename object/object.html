@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Menú de Aplicaciones con Objetos</title>
+    <script>
+        const hotel = {
+            habitaciones: [0, 0, 0, 0, 0],
+
+            mostrarEstado() {
+                let estado = "Estado de habitaciones:\n";
+                this.habitaciones.forEach((h, i) => {
+                    estado += `Habitación ${i + 1}: ${h === 0 ? "Libre" : "Ocupada"}\n`;
+                });
+                alert(estado);
+            },
+
+            reservar(num) {
+                if (num < 1 || num > 5) {
+                    alert("Número inválido. Usa 1 - 5.");
+                } else if (this.habitaciones[num - 1] === 1) {
+                    alert("Habitación ya ocupada.");
+                } else {
+                    this.habitaciones[num - 1] = 1;
+                    alert(`Habitación ${num} reservada.`);
+                }
+            },
+
+            liberar(num) {
+                if (num < 1 || num > 5) {
+                    alert("Número inválido. Usa 1 - 5.");
+                } else if (this.habitaciones[num - 1] === 0) {
+                    alert("Habitación ya está libre.");
+                } else {
+                    this.habitaciones[num - 1] = 0;
+                    alert(`Habitación ${num} liberada.`);
+                }
+            },
+
+            iniciar() {
+                while (true) {
+                    const op = prompt("1. Ver estado\n2. Reservar\n3. Liberar\n4. Salir");
+                    if (op === "1") this.mostrarEstado();
+                    else if (op === "2") this.reservar(parseInt(prompt("Número de habitación (1-5):")));
+                    else if (op === "3") this.liberar(parseInt(prompt("Número de habitación (1-5):")));
+                    else if (op === "4") { alert("Saliendo..."); break; }
+                    else alert("Opción inválida.");
+                }
+            }
+        };
+
+        const cajero = {
+            saldo: 0,
+            transacciones: [],
+
+            consultarSaldo() {
+                alert(`Saldo actual: $${this.saldo}`);
+            },
+
+            depositar(monto) {
+                if (monto > 0) {
+                    this.saldo += monto;
+                    this.transacciones.push(monto);
+                    alert(`Depositaste $${monto}`);
+                } else {
+                    alert("Monto inválido.");
+                }
+            },
+
+            retirar(monto) {
+                if (monto > 500) alert("Máximo $500 por retiro.");
+                else if (monto > this.saldo) alert("Saldo insuficiente.");
+                else {
+                    this.saldo -= monto;
+                    this.transacciones.push(-monto);
+                    alert(`Retiraste $${monto}`);
+                }
+            },
+
+            iniciar() {
+                while (true) {
+                    const op = prompt("1. Consultar saldo\n2. Depositar\n3. Retirar\n4. Salir");
+                    if (op === "1") this.consultarSaldo();
+                    else if (op === "2") this.depositar(parseFloat(prompt("Monto a depositar:")));
+                    else if (op === "3") this.retirar(parseFloat(prompt("Monto a retirar:")));
+                    else if (op === "4") { alert("Saliendo..."); break; }
+                    else alert("Opción inválida.");
+                }
+            }
+        };
+
+        const supermercado = {
+            cola: [],
+            capacidad: 7,
+
+            agregar(nombre) {
+                if (this.cola.length < this.capacidad) {
+                    this.cola.push(nombre);
+                    alert(`${nombre} agregado a la cola.`);
+                } else {
+                    alert("La cola está llena.");
+                }
+            },
+
+            atender() {
+                if (this.cola.length > 0) {
+                    const cliente = this.cola.shift();
+                    alert(`Atendiendo a ${cliente}`);
+                } else {
+                    alert("No hay clientes en la cola.");
+                }
+            },
+
+            iniciar() {
+                while (true) {
+                    const op = prompt("1. Agregar cliente\n2. Atender cliente\n3. Salir");
+                    if (op === "1") this.agregar(prompt("Nombre del cliente:"));
+                    else if (op === "2") this.atender();
+                    else if (op === "3") { alert("Saliendo..."); break; }
+                    else alert("Opción inválida.");
+                }
+            }
+        };
+
+        const maquina = {
+            productos: ["Galletas", "Refresco", "Chocolates", "Caramelos", "Chips"],
+            cantidades: [5, 5, 5, 5, 5],
+
+            mostrarInventario() {
+                let inv = "Inventario:\n";
+                for (let i = 0; i < this.productos.length; i++) {
+                    inv += `${i + 1}. ${this.productos[i]} - Cantidad: ${this.cantidades[i]}\n`;
+                }
+                alert(inv);
+            },
+
+            sugerir() {
+                for (let i = 0; i < this.cantidades.length; i++) {
+                    if (this.cantidades[i] > 0) return this.productos[i];
+                }
+                return "No hay productos disponibles.";
+            },
+
+            comprar(codigo) {
+                if (this.cantidades[codigo - 1] > 0) {
+                    this.cantidades[codigo - 1]--;
+                    alert(`Compraste: ${this.productos[codigo - 1]}`);
+                } else {
+                    alert(`${this.productos[codigo - 1]} está agotado. Sugerencia: ${this.sugerir()}`);
+                }
+            },
+
+            iniciar() {
+                while (true) {
+                    const op = prompt("1. Ver inventario\n2. Comprar producto\n3. Salir");
+                    if (op === "1") this.mostrarInventario();
+                    else if (op === "2") {
+                        const codigo = parseInt(prompt("Código del producto (1-5):"));
+                        if (codigo >= 1 && codigo <= 5) this.comprar(codigo);
+                        else alert("Código inválido.");
+                    } else if (op === "3") { alert("Saliendo..."); break; }
+                    else alert("Opción inválida.");
+                }
+            }
+        };
+
+        function mainMenu() {
+            while (true) {
+                const op = prompt("Selecciona una app:\n1. Hotel\n2. Cajero\n3. Supermercado\n4. Máquina Expendedora\n5. Salir");
+                if (op === "1") hotel.iniciar();
+                else if (op === "2") cajero.iniciar();
+                else if (op === "3") supermercado.iniciar();
+                else if (op === "4") maquina.iniciar();
+                else if (op === "5") { alert("Saliendo del programa..."); break; }
+                else alert("Opción inválida.");
+            }
+        }
+
+        window.onload = mainMenu;
+    </script>
+</head>
+<body>
+</body>
+</html>
